@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: http-server
-        image: tonylixu/go_http_server:v1.1
+        image: tonylixu/go_http_server:v1.2
         env:
         - name: HTTP_SERVER_PORT
           valueFrom:

@@ -5,4 +5,4 @@ metadata:
   namespace: http-server
 data:
   server_port: "8080"
-  log_file: "/tmp/http_server.log"
+  log_file: "/logs/http_server.log"

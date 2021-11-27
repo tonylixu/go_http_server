@@ -52,4 +52,4 @@ spec:
             # One minute startup finish
             failureThreshold: 6
             periodSeconds: 10
-          restartPolicy: OnFailure
+      restartPolicy: OnFailure

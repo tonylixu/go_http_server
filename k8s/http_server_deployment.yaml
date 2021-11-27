@@ -32,6 +32,7 @@ spec:
             configMapKeyRef:
               name: http-server
               key: log_file
+        args: ["--port", "$(HTTP_SERVER_PORT)", "--log", "$(LOG_FILE)"]
         ports:
           - containerPort: 8080
         readinessProbe:

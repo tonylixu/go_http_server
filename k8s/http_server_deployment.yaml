@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: http-server
-        image: tonylixu/go_http_server:v1.2
+        image: tonylixu/go_http_server:v1.3
         env:
         - name: HTTP_SERVER_PORT
           valueFrom:
@@ -35,7 +35,7 @@ spec:
         readinessProbe:
           httpGet:
             path: /healthz
-            port: liveness-port
+            port: 8080
           initialDelaySeconds: 3
           periodSeconds: 3
         livenessProbe:
@@ -48,7 +48,7 @@ spec:
         startupProbe:
           httpGet:
             path: /healthz
-            port: liveness-port
+            port: 8080
           # One minute startup finish
           failureThreshold: 6
           periodSeconds: 10

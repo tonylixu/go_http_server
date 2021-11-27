@@ -20,13 +20,15 @@ spec:
           image: tonylixu/go_http_server:v1.1
           env:
             - name: HTTP_SERVER_PORT
-              configMapKeyRef:
-                name: http-server
-                key: server_port
+              valueFrom:
+                configMapKeyRef:
+                  name: http-server
+                  key: server_port
             - name: LOG_FILE
-              configMapKeyRef:
-                name: http-server
-                key: log_file
+              valueFrom:
+                configMapKeyRef:
+                  name: http-server
+                  key: log_file
           args: ["--port", "$(HTTP_SERVER_PORT)", "--log", "$(LOG_FILE)"]
           ports:
             - containerPort: 8080
@@ -50,4 +52,4 @@ spec:
             # One minute startup finish
             failureThreshold: 6
             periodSeconds: 10
-        restartPolicy: OnFailure
+          restartPolicy: OnFailure

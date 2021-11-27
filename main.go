@@ -32,7 +32,7 @@ func AttachProfiler(router *mux.Router) {
 
 func ParseArguments() (int, string) {
 	httpServerPort := flag.Int("port", 8080, "HTTP server port")
-	logFile := flag.String("log", "/var/log/http_server.log", "Log file location")
+	logFile := flag.String("log", "./http_server.log", "Log file location")
 
 	flag.Parse()
 	return *httpServerPort, *logFile

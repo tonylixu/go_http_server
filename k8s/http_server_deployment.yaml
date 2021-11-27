@@ -17,7 +17,10 @@ spec:
     spec:
       containers:
       - name: http-server
-        image: tonylixu/go_http_server:v1.3
+        image: tonylixu/go_http_server:v1.8
+        volumeMounts:
+        - mountPath: /logs
+          name: log-volume
         env:
         - name: HTTP_SERVER_PORT
           valueFrom:
@@ -29,7 +32,6 @@ spec:
             configMapKeyRef:
               name: http-server
               key: log_file
-        args: ["--port", "$(HTTP_SERVER_PORT)", "--log", "$(LOG_FILE)"]
         ports:
           - containerPort: 8080
         readinessProbe:
@@ -52,4 +54,6 @@ spec:
           # One minute startup finish
           failureThreshold: 6
           periodSeconds: 10
-      restartPolicy: Always
+      volumes:
+      - name: log-volume
+        emptyDir: {}

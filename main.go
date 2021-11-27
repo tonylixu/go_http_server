@@ -32,7 +32,7 @@ func AttachProfiler(router *mux.Router) {
 
 func ParseArguments() (int, string) {
 	httpServerPort := flag.Int("port", 8080, "HTTP server port")
-	logFile := flag.String("log", "./http_server.log", "Log file location")
+	logFile := flag.String("log", "/logs/http_server.log", "Log file location")
 
 	flag.Parse()
 	return *httpServerPort, *logFile
@@ -55,14 +55,14 @@ func main() {
 
 	//Create a configuration for logger
 	config := zap.NewProductionConfig()
-	config.OutputPaths = []string{"http-server.log"}
+	config.OutputPaths = []string{"/logs/http-server.log"}
 	zapLogger, err := config.Build()
 	if err != nil {
 		zapLogger.Error(fmt.Sprint("Can't initialize zap logger", err))
 	}
 
 	// Create new http.Server object
-	httpServerPortString := fmt.Sprintf("%d", httpServerPort)
+	httpServerPortString := fmt.Sprintf(":%d", httpServerPort)
 	srv := http.Server{
 		Addr:    httpServerPortString,
 		Handler: router,

@@ -4,20 +4,22 @@ package main
 // Import necessary packages
 import (
 	"context"
+	"flag"
 	"fmt"
-	"log"
 	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
 
-	"./handlers"
+	handlers "github.com/tonylixu/go_http_server/handlers"
+	probe "github.com/tonylixu/go_http_server/probe"
 
 	"net/http/pprof"
 	_ "net/http/pprof"
 
 	"github.com/gorilla/mux" // need to use dep for package management
+	"go.uber.org/zap"
 )
 
 // HTTP server debug request handlers
@@ -28,8 +30,19 @@ func AttachProfiler(router *mux.Router) {
 	router.HandleFunc("/debug/pprof/symbol", pprof.Symbol)
 }
 
+func ParseArguments() (int, string) {
+	httpServerPort := flag.Int("port", 8080, "HTTP server port")
+	logFile := flag.String("log", "/var/log/http_server.log", "Log file location")
+
+	flag.Parse()
+	return *httpServerPort, *logFile
+}
+
 // main function
 func main() {
+	// Parse command line arguments
+	httpServerPort, logFile := ParseArguments()
+	fmt.Println("Port is ", httpServerPort, "log is ", logFile)
 	// Implements a request router and dispatcher for matching
 	// incoming requests to their respective handler.
 	router := mux.NewRouter()
@@ -40,9 +53,18 @@ func main() {
 	router.HandleFunc("/headers", handlers.HeaderHandler).Methods("GET")
 	router.HandleFunc("/healthz", handlers.SuccessHandler).Methods("GET")
 
+	//Create a configuration for logger
+	config := zap.NewProductionConfig()
+	config.OutputPaths = []string{"http-server.log"}
+	zapLogger, err := config.Build()
+	if err != nil {
+		zapLogger.Error(fmt.Sprint("Can't initialize zap logger", err))
+	}
+
 	// Create new http.Server object
+	httpServerPortString := fmt.Sprintf("%d", httpServerPort)
 	srv := http.Server{
-		Addr:    ":8080",
+		Addr:    httpServerPortString,
 		Handler: router,
 	}
 
@@ -52,14 +74,22 @@ func main() {
 
 	// Start a goroutine for http server
 	go func() {
+		if err := probe.Create(); err != nil {
+			panic(err)
+		}
+
 		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			log.Fatalf("listen: %s\n", err)
+			zapLogger.Error(fmt.Sprint("Error listening: ", err))
+		}
+
+		if err := probe.Remove(); err != nil {
+			panic(err)
 		}
 	}()
-	log.Print("Server started")
+	zapLogger.Info("Server started")
 
 	<-done
-	fmt.Println("Server stopped")
+	zapLogger.Info("Server stopped")
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer func() {
@@ -68,7 +98,10 @@ func main() {
 	}()
 
 	if err := srv.Shutdown(ctx); err != nil {
-		log.Fatalf("Server Shutdown Failed:%+v", err)
+		zapLogger.Error(fmt.Sprint("Server Shutdown Failed: ", err))
 	}
-	log.Print("Server Exited Properly")
+
+	// Flushes buffer
+	defer zapLogger.Sync()
+	zapLogger.Error("Server Exited Properly")
 }

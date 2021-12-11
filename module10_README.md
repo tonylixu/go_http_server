@@ -158,3 +158,12 @@ loki-prometheus-server          NodePort    10.110.163.119   <none>        80:32
 You can also check the prometheus web UI now.
 * loki-prometheus screenshot
 ![Prometheus Web UI](./images/loki-prometheus.png)
+
+### Check httpserver delayed metrics
+* Delayed metrics
+![Service httpserver delay](./images/loki-prometheus-httpserver.png)
+
+
+### Grafana Dashboard
+* Httpserver grafana dashboard screenshot
+![Httpserver dashboard](./images/grafana-dashboard.png)

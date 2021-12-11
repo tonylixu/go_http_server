@@ -1,4 +1,4 @@
-export tag=v1.9
+export tag=v1.10
 root:
     export ROOT=github.com/tonylixu/go_http_server
 

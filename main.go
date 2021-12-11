@@ -20,6 +20,8 @@ import (
 
 	"github.com/gorilla/mux" // need to use dep for package management
 	"go.uber.org/zap"
+
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 // HTTP server debug request handlers
@@ -52,10 +54,12 @@ func main() {
 	router.HandleFunc("/", handlers.RootHandler).Methods("GET")
 	router.HandleFunc("/headers", handlers.HeaderHandler).Methods("GET")
 	router.HandleFunc("/healthz", handlers.SuccessHandler).Methods("GET")
+	router.Path("/metrics").Handler(promhttp.Handler())
 
 	//Create a configuration for logger
 	config := zap.NewProductionConfig()
-	config.OutputPaths = []string{"/logs/http-server.log"}
+	// config.OutputPaths = []string{"/logs/http-server.log"}
+	config.OutputPaths = []string{logFile}
 	zapLogger, err := config.Build()
 	if err != nil {
 		zapLogger.Error(fmt.Sprint("Can't initialize zap logger", err))

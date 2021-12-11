@@ -7,7 +7,7 @@ metadata:
 spec:
   containers:
     - name: http-server
-      image: tonylixu/go_http_server:v1.0
+      image: tonylixu/go_http_server:v1.10
       ports:
       - name: liveness-port
         containerPort: 8080

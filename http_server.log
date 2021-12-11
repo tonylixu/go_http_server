@@ -1,0 +1,6 @@
+{"level":"info","ts":1639176212.16628,"caller":"go_http_server/main.go:90","msg":"Server started"}
+{"level":"info","ts":1639176214.6878002,"caller":"go_http_server/main.go:93","msg":"Server stopped"}
+{"level":"error","ts":1639176214.6893408,"caller":"go_http_server/main.go:107","msg":"Server Exited Properly","stacktrace":"main.main\n\t/Users/txu/code/geek-univ/cloud-native/go_http_server/main.go:107\nruntime.main\n\t/usr/local/go/src/runtime/proc.go:255"}
+{"level":"info","ts":1639231817.510674,"caller":"go_http_server/main.go:93","msg":"Server started"}
+{"level":"info","ts":1639231907.5187619,"caller":"go_http_server/main.go:96","msg":"Server stopped"}
+{"level":"error","ts":1639231907.5204961,"caller":"go_http_server/main.go:110","msg":"Server Exited Properly","stacktrace":"main.main\n\t/Users/txu/code/geek-univ/cloud-native/go_http_server/main.go:110\nruntime.main\n\t/usr/local/go/src/runtime/proc.go:255"}

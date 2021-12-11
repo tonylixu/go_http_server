@@ -4,13 +4,29 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"math/rand"
 	"net/http"
 	"os"
 	"time"
+
+	"github.com/tonylixu/go_http_server/metrics"
 )
+
+func randInt(min int, max int) int {
+	rand.Seed(time.Now().UTC().UnixNano())
+	return min + rand.Intn(max-min)
+}
 
 // HTTP server root path handler
 func RootHandler(w http.ResponseWriter, r *http.Request) {
+
+	// Introduce delay
+	delay := randInt(0, 2000)
+	timer := metrics.NewTimer()
+	defer timer.ObserveTotal()
+	fmt.Printf("Sleeping %d milliseconds...\n", delay)
+	time.Sleep(time.Millisecond * time.Duration(delay))
+
 	// Handle page not found
 	if r.URL.Path != "/" {
 		http.NotFound(w, r)

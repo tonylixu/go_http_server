@@ -10,6 +10,12 @@ Requirements:
 The docker image repository is located at:
 * https://hub.docker.com/repository/docker/tonylixu/go_http_server
 
+### Promhttp Handler
+* Code link: https://github.com/tonylixu/go_http_server/blob/main/main.go#L57
+
+### Metrics Go file
+* metrics.go: https://github.com/tonylixu/go_http_server/tree/main/metrics
+
 ### Install loki-stack
 ```bash
 $ curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3

@@ -15,7 +15,7 @@ func Register() {
 }
 
 const (
-	MetricsNamespace = "httpserver"
+	MetricsNamespace = "http-server"
 )
 
 // NewExecutionTimer provides a timer for Updater's RunOnce execution

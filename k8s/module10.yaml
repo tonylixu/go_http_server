@@ -46,7 +46,7 @@ spec:
       # Containers
       containers:
       - name: httpserver
-        image: tonylixu/go_http_server:v1.11
+        image: tonylixu/go_http_server:v1.12
         volumeMounts:
         - mountPath: /logs
           name: log-volume

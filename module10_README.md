@@ -3,13 +3,15 @@ Requirements:
 * 为 HTTPServer 添加 0-2 秒的随机延时
   * 详情见代码: https://github.com/tonylixu/go_http_server/blob/main/handlers/handlers.go#L21
 * 为 HTTPServer 项目添加延时 Metric
- * 详情见代码: https://github.com/tonylixu/go_http_server/blob/main/handlers/handlers.go#L21
+  * 详情见代码: https://github.com/tonylixu/go_http_server/blob/main/handlers/handlers.go#L21
 * 将 HTTPServer 部署至测试集群，并完成 Prometheus 配置
- * 详情见： https://github.com/tonylixu/go_http_server/blob/main/module10_README.md#expose-prometheus-server
+  * 详情见： https://github.com/tonylixu/go_http_server/blob/main/module10_README.md#expose-prometheus-server
 * 从 Promethus 界面中查询延时指标数据
- * 详情见： https://github.com/tonylixu/go_http_server/blob/main/module10_README.md#expose-prometheus-server
+  * 详情见： https://github.com/tonylixu/go_http_server/blob/main/module10_README.md#expose-prometheus-server
 * (可选) 创建一个 Grafana Dashboard 展现延时分配情况
- * 详情见: https://github.com/tonylixu/go_http_server/blob/main/module10_README.md#grafana-dashboard
+  * 详情见: https://github.com/tonylixu/go_http_server/blob/main/module10_README.md#grafana-dashboard
+
+### 以下是第十次作业的相关详细信息，包含安装steps，代码镜像的拉取以及服务的建立，还有作业截屏
 
 ### Docker Image
 The docker image repository is located at:

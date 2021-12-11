@@ -92,17 +92,6 @@ spec:
           requests:
             cpu: 200m
             memory: 200Mi
-        # lifecycle action hooks
-        lifecycle:
-          preStop:
-            exec:
-              command: [ "sleep", "5" ]
-          postStart:
-            exec:
-              command: [ '/bin/sh', '-c', 'echo start http server...' ]
-        volumeMounts:
-          - mountPath: /var/log
-            name: log-volume
 ---
 apiVersion: v1
 kind: Service

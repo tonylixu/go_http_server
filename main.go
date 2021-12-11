@@ -22,6 +22,7 @@ import (
 	"go.uber.org/zap"
 
 	"github.com/prometheus/client_golang/prometheus/promhttp"
+	"github.com/tonylixu/go_http_server/metrics"
 )
 
 // HTTP server debug request handlers
@@ -45,6 +46,7 @@ func main() {
 	// Parse command line arguments
 	httpServerPort, logFile := ParseArguments()
 	fmt.Println("Port is ", httpServerPort, "log is ", logFile)
+	metrics.Register()
 	// Implements a request router and dispatcher for matching
 	// incoming requests to their respective handler.
 	router := mux.NewRouter()

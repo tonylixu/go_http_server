@@ -24,8 +24,18 @@ func RootHandler(w http.ResponseWriter, r *http.Request) {
 	delay := randInt(0, 2000)
 	timer := metrics.NewTimer()
 	defer timer.ObserveTotal()
+	user := r.URL.Query().Get("user")
 	fmt.Printf("Sleeping %d milliseconds...\n", delay)
 	time.Sleep(time.Millisecond * time.Duration(delay))
+	if user != "" {
+		io.WriteString(w, fmt.Sprintf("Hellp [%v]\n", user))
+	} else {
+		io.WriteString(w, "hello [stranger]\n")
+	}
+	io.WriteString(w, "============Details of the http request header:=================\n")
+	for k, v := range r.Header {
+		io.WriteString(w, fmt.Sprintf("#{%v}=#{%v}\n", k, v))
+	}
 
 	// Handle page not found
 	if r.URL.Path != "/" {

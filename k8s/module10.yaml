@@ -1,8 +1,8 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: http-server
-  namespace: http-server
+  name: httpserver
+  namespace: httpserver
 data:
   server_port: "8080"
   log_file: "/logs/http_server.log"
@@ -10,14 +10,14 @@ data:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: http-server-deployment
-  namespace: http-server
+  name: httpserver-deployment
+  namespace: httpserver
   labels:
-    app: http-server
+    app: httpserver
 spec:
   selector:
     matchLabels:
-      app: http-server
+      app: httpserver
   # Availability
   replicas: 3
   strategy:
@@ -33,7 +33,7 @@ spec:
         prometheus.io/scrape: "true"
         prometheus.io/port: "8080"
       labels:
-        app: http-server
+        app: httpserver
     spec:
       # Gracefully Stop
       terminationGracePeriodSeconds: 10
@@ -45,7 +45,7 @@ spec:
 
       # Containers
       containers:
-      - name: http-server
+      - name: httpserver
         image: tonylixu/go_http_server:v1.11
         volumeMounts:
         - mountPath: /logs
@@ -54,12 +54,12 @@ spec:
         - name: HTTP_SERVER_PORT
           valueFrom:
             configMapKeyRef:
-              name: http-server
+              name: httpserver
               key: server_port
         - name: LOG_FILE
           valueFrom:
             configMapKeyRef:
-              name: http-server
+              name: httpserver
               key: log_file
         args: ["-port", "$(HTTP_SERVER_PORT)", "-log", "$(LOG_FILE)"]
         ports:
@@ -96,11 +96,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: http-server-service
-  namespace: http-server
+  name: httpserver-service
+  namespace: httpserver
 spec:
   selector:
-    app: http-server
+    app: httpserver
   ports:
     - protocol: TCP
       port: 80

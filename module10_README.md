@@ -6,6 +6,10 @@ Requirements:
 * 从 Promethus 界面中查询延时指标数据
 *（可选）创建一个 Grafana Dashboard 展现延时分配情况
 
+### Docker Image
+The docker image repository is located at:
+* https://hub.docker.com/repository/docker/tonylixu/go_http_server
+
 ### Install loki-stack
 ```bash
 $ curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3

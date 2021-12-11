@@ -4,7 +4,7 @@ Requirements:
 * 为 HTTPServer 项目添加延时 Metric
 * 将 HTTPServer 部署至测试集群，并完成 Prometheus 配置
 * 从 Promethus 界面中查询延时指标数据
-*（可选）创建一个 Grafana Dashboard 展现延时分配情况
+* (可选) 创建一个 Grafana Dashboard 展现延时分配情况
 
 ### Docker Image
 The docker image repository is located at:

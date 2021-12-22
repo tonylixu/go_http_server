@@ -32,11 +32,20 @@ $ kubectl create ns httpserver
 * Enable istio for new namespace:
 ```bash
 $ kubectl label ns httpserver istio-injection=enabled
+namespace/httpserver labeled
+$ kubectl get ns httpserver --show-labels
+NAME         STATUS   AGE   LABELS
+httpserver   Active   10d   istio-injection=enabled,kubernetes.io/metadata.name=httpserver
 ```
 * Create httpserver service
-```
+```bash
 $ kubectl create -f httpserver.yaml
+configmap/httpserver created
+deployment.apps/httpserver-deployment created
+service/httpserver-service created
 ```
+
+### Generate Certificates
 
 ### Deploy new code to k8s
 ```bash

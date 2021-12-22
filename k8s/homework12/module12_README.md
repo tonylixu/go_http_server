@@ -74,68 +74,36 @@ istiod                 ClusterIP      10.97.37.203    <none>        15010/TCP,15
 ### Access httpserver via ingress
 ```bash
 $ curl --resolve httpsserver.tony.io:443:10.102.233.41 https://httpsserver.tony.io/healthz -v -k
+* Added httpsserver.tony.io:443:10.102.233.41 to DNS cache
+* Hostname httpsserver.tony.io was found in DNS cache
+*   Trying 10.102.233.41:443...
+* TCP_NODELAY set
+* Connected to httpsserver.tony.io (10.102.233.41) port 443 (#0)
+* ALPN, offering h2
+* ALPN, offering http/1.1
+* successfully set certificate verify locations:
+*   CAfile: /etc/ssl/certs/ca-certificates.crt
+  CApath: /etc/ssl/certs
+* TLSv1.3 (OUT), TLS handshake, Client hello (1):
+* TLSv1.3 (IN), TLS handshake, Server hello (2):
+* TLSv1.3 (IN), TLS handshake, Encrypted Extensions (8):
+* TLSv1.3 (IN), TLS handshake, Certificate (11):
+* TLSv1.3 (IN), TLS handshake, CERT verify (15):
+* TLSv1.3 (IN), TLS handshake, Finished (20):
+* TLSv1.3 (OUT), TLS change cipher, Change cipher spec (1):
+* TLSv1.3 (OUT), TLS handshake, Finished (20):
+* SSL connection using TLSv1.3 / TLS_AES_256_GCM_SHA384
+* ALPN, server accepted to use h2
+...
+< HTTP/1.1 200 OK
+< date: Wed, 22 Dec 2021 14:22:43 GMT
+< content-length: 0
+< x-envoy-upstream-service-time: 0
+< server: istio-envoy
 ```
 
-### Deploy new code to k8s
+### Install jaeger for tracing
+* Install jaeger
 ```bash
-$ k create -f k8s/module10.yaml
-
-$ k get po -n http-server
-NAME                                      READY   STATUS    RESTARTS   AGE
-http-server-deployment-66d4fbc946-2r2b5   1/1     Running   0          7m32s
-http-server-deployment-66d4fbc946-fpp2c   1/1     Running   0          7m32s
-http-server-deployment-66d4fbc946-hqznz   1/1     Running   0          7m32s
-
-$ k get svc -n http-server
-NAME                  TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)   AGE
-http-server-service   ClusterIP   10.111.177.185   <none>        80/TCP    7m56s
-
-$ curl http://10.111.177.185/metrics
-# HELP go_gc_duration_seconds A summary of the pause duration of garbage collection cycles.
-# TYPE go_gc_duration_seconds summary
-go_gc_duration_seconds{quantile="0"} 4.0942e-05
-go_gc_duration_seconds{quantile="0.25"} 4.0942e-05
-go_gc_duration_seconds{quantile="0.5"} 8.7557e-05
-go_gc_duration_seconds{quantile="0.75"} 8.7557e-05
-go_gc_duration_seconds{quantile="1"} 8.7557e-05
-go_gc_duration_seconds_sum 0.000128499
-go_gc_duration_seconds_count 2
-# HELP go_goroutines Number of goroutines that currently exist.
-# TYPE go_goroutines gauge
-go_goroutines 10
-# HELP go_info Information about the Go environment.
-# TYPE go_info gauge
-go_info{version="go1.17.3"} 1
-# HELP go_memstats_alloc_bytes Number of bytes allocated and still in use.
-# TYPE go_memstats_alloc_bytes gauge
-....
+$
 ```
-
-### Expose prometheus server
-```bash
-$ k edit svc loki-prometheus-server
-service/loki-prometheus-server edited
-ubuntu@ip-172-31-82-231:~/go_http_server/k8s$ k get svc
-NAME                            TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE
-kubernetes                      ClusterIP   10.96.0.1        <none>        443/TCP        50m
-loki                            ClusterIP   10.107.65.27     <none>        3100/TCP       45m
-loki-grafana                    NodePort    10.108.243.191   <none>        80:30339/TCP   45m
-loki-headless                   ClusterIP   None             <none>        3100/TCP       45m
-loki-kube-state-metrics         ClusterIP   10.98.58.192     <none>        8080/TCP       45m
-loki-prometheus-alertmanager    ClusterIP   10.108.52.140    <none>        80/TCP         45m
-loki-prometheus-node-exporter   ClusterIP   None             <none>        9100/TCP       45m
-loki-prometheus-pushgateway     ClusterIP   10.104.17.17     <none>        9091/TCP       45m
-loki-prometheus-server          NodePort    10.110.163.119   <none>        80:32044/TCP   45m
-```
-You can also check the prometheus web UI now.
-* loki-prometheus screenshot
-![Prometheus Web UI](./images/loki-prometheus.png)
-
-### Check httpserver delayed metrics
-* Delayed metrics
-![Service httpserver delay](./images/loki-prometheus-httpserver.png)
-
-
-### Grafana Dashboard
-* Httpserver grafana dashboard screenshot
-![Httpserver dashboard](./images/grafana-dashboard.png)

@@ -12,7 +12,7 @@ spec:
         - port: 443
       route:
         - destination:
-            host: httpsserver.httpserver.svc.cluster.local
+            host: httpserver.httpserver.svc.cluster.local
             port:
               number: 80
 ---

@@ -45,7 +45,30 @@ deployment.apps/httpserver-deployment created
 service/httpserver-service created
 ```
 
-### Generate Certificates
+### Generate Certificates and Apply istio spec
+* Create certs
+```bash
+$ openssl req -x509 -sha256 -nodes -days 365 -newkey rsa:2048 -subj '/O=tony Inc./CN=*.tony.io' -keyout tony.io.key -out tony.io.crt
+```
+* Create secret
+```bash
+$ $ kubectl create -n istio-system secret tls tony-credential --key=tony.io.key --cert=tony.io.crt
+secret/tony-credential created
+```
+* Apply istio spec
+$ kubectl apply -f istio-spec.yaml -n httpserver
+virtualservice.networking.istio.io/httpsserver created
+gateway.networking.istio.io/httpsserver created
+```
+
+### Check Ingress IP
+```bash
+$ kubectl get svc -n istio-system
+NAME                   TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)                                                                      AGE
+istio-egressgateway    ClusterIP      10.96.73.3      <none>        80/TCP,443/TCP                                                               19h
+istio-ingressgateway   LoadBalancer   10.102.233.41   <pending>     15021:32473/TCP,80:31327/TCP,443:32164/TCP,31400:32050/TCP,15443:30557/TCP   19h
+istiod                 ClusterIP      10.97.37.203    <none>        15010/TCP,15012/TCP,443/TCP,15014/TCP                                        19h
+```
 
 ### Deploy new code to k8s
 ```bash

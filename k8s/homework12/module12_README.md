@@ -105,5 +105,34 @@ $ curl --resolve httpsserver.tony.io:443:10.102.233.41 https://httpsserver.tony.
 ### Install jaeger for tracing
 * Install jaeger
 ```bash
-$
+$ k create -f jaeger.yaml
+deployment.apps/jaeger created
+service/tracing created
+service/zipkin created
+service/jaeger-collector created
+
+$ ki get po
+NAME                                    READY   STATUS    RESTARTS      AGE
+istio-egressgateway-65bdddf685-4rgp5    1/1     Running   1 (11h ago)   19h
+istio-ingressgateway-7b545cdbc7-hbx8g   1/1     Running   1 (91m ago)   19h
+istiod-864977fd6c-hpfrv                 1/1     Running   1 (11h ago)   19h
+jaeger-d7849fb76-jdq2p                  1/1     Running   0             16s
 ```
+* Update configmap
+```bash
+$ ki edit configmap
+add
+simpling: 100
+under tracing
+configmap/istio edited
+```
+
+### Bring up jaeger dashboard
+* Use istioctl dashboard command
+```bash
+$ istioctl dashboard jaeger --address 0.0.0.0
+http://0.0.0.0:16686
+Failed to open browser; open http://0.0.0.0:16686 in your browser.
+```
+* Dashboard screenshot
+![Jaeger dashboard](../../images/jager-ui.png)

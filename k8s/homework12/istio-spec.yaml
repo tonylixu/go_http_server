@@ -15,6 +15,7 @@ spec:
             host: httpserver.httpserver.svc.cluster.local
             port:
               number: 80
+        timeout: 10
 ---
 apiVersion: networking.istio.io/v1beta1
 kind: Gateway
